@@ -152,6 +152,7 @@ PartUniversalTab:Button("DYHUB TAX汉化", function()
     loadstring(game:HttpGet("https://raw.githubusercontent.com/Tax-Script/TaxHub/main/DYHUB"))()
 end)
 
+BattleTab:Separator("功能脚本")
 BattleTab:Button("VexonHub TAX汉化", function()
     script_key = "TAX_Free"
     loadstring(game:HttpGet("https://raw.githubusercontent.com/Tax-Script/TaxHub/main/VexonHub"))()
@@ -159,6 +160,11 @@ end)
 
 BattleTab:Button("phantasm Kenny汉化", function()
     loadstring(game:HttpGet("https://raw.githubusercontent.com/ke9460394-dot/ugik/refs/heads/main/phantasm.lua"))()
+end)
+
+BattleTab:Separator("杂项")
+BattleTab:Button("全英雄动作脚本", function()
+    loadstring(game:HttpGet("https://raw.githubusercontent.com/Mautiku/ehh/main/strong%20guest.lua.txt"))()
 end)
 
 UltimateBattleTab:Button("Xi Pro", function()
