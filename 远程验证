@@ -165,6 +165,14 @@ BattleTab:Button("全英雄动作脚本", function()
     loadstring(game:HttpGet("https://raw.githubusercontent.com/Mautiku/ehh/main/strong%20guest.lua.txt"))()
 end)
 
+BattleTab:Button("DoviHUB (需解卡)", function()
+    loadstring(game:HttpGet("https://raw.githubusercontent.com/needanewphone32-eng/tsbfiles/refs/heads/main/Main1.lua"))()
+end)
+
+BattleTab:Button("nicuse TAX汉化 (需解卡)", function()
+    loadstring(game:HttpGet("https://raw.githubusercontent.com/Tax-Script/TaxHub/refs/heads/main/nicuse"))()
+end)
+
 UltimateBattleTab:Button("Xi Pro", function()
     loadstring(game:HttpGet("http://raw.githubusercontent.com/123fa98/Xi_Pro/refs/heads/main/免费/终极战场.lua"))()
 end)
