@@ -49,46 +49,31 @@ end
 
 replaceWTB()
 
--- STELLAR 加载界面，无文字显示
 local Players = game:GetService("Players")
 local TweenService = game:GetService("TweenService")
 local Lighting = game:GetService("Lighting")
 local player = Players.LocalPlayer
 
--- 模糊效果
 local blur = Instance.new("BlurEffect", Lighting)
 blur.Size = 0
 TweenService:Create(blur, TweenInfo.new(0.5), {Size = 24}):Play()
 
--- 创建 ScreenGui
 local screenGui = Instance.new("ScreenGui", player:WaitForChild("PlayerGui"))
 screenGui.Name = "StellarLoader"
 screenGui.ResetOnSpawn = false
 screenGui.IgnoreGuiInset = true
 
--- 主框架
 local frame = Instance.new("Frame", screenGui)
 frame.Size = UDim2.new(1, 0, 1, 0)
 frame.BackgroundTransparency = 1
 
--- 半透明黑色背景
-local bg = Instance.new("Frame", frame)
-bg.Size = UDim2.new(1, 0, 1, 0)
-bg.BackgroundColor3 = Color3.fromRGB(10, 10, 20)
-bg.BackgroundTransparency = 1
-bg.ZIndex = 0
-TweenService:Create(bg, TweenInfo.new(0.5), {BackgroundTransparency = 0.3}):Play()
-
--- 淡出并销毁的缓动函数
 local function tweenOutAndDestroy()
-    TweenService:Create(bg, TweenInfo.new(0.5), {BackgroundTransparency = 1}):Play()
     TweenService:Create(blur, TweenInfo.new(0.5), {Size = 0}):Play()
     wait(0.6)
     screenGui:Destroy()
     blur:Destroy()
 end
 
--- 直接等待后淡出
 wait(2)
 tweenOutAndDestroy()
 
@@ -116,6 +101,8 @@ local SlapTab = Window:Tab("巴掌大战", "rbxassetid://10723407389")
 UniversalTab:Button("飞行", function()
     loadstring(game:HttpGet("https://raw.githubusercontent.com/Tax-Script/Misc./refs/heads/main/flyv3"))()
 end)
+
+Notice = PartUniversalTab:Label("原脚本作者已改路径，此脚本暂时失效")
 
 PartUniversalTab:Button("DYHUB TAX汉化", function()
     loadstring(game:HttpGet("https://raw.githubusercontent.com/Tax-Script/TaxHub/main/DYHUB"))()
