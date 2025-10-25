@@ -176,7 +176,7 @@ spawn(function()
     end
 end)
 
-UniversalTab:Toggle("启用速度", nil, "启用自定义移动速度", function(state)
+UniversalTab:Toggle("启用平移加速度", nil, "启用自定义移动速度", function(state)
     speedEnabled = state
     if not state then
         setSpeed(16)
@@ -185,7 +185,7 @@ UniversalTab:Toggle("启用速度", nil, "启用自定义移动速度", function
     end
 end)
 
-UniversalTab:Slider("速度", 16, 1000, 16, function(value)
+UniversalTab:Slider("平移加速度", 16, 1000, 16, function(value)
     currentSpeed = value
     if speedEnabled then
         setSpeed(value)
@@ -223,6 +223,10 @@ BattleTab:Seperator("功能脚本")
 BattleTab:Button("VexonHub TAX汉化", function()
     script_key = "TAX_Free"
     loadstring(game:HttpGet("https://raw.githubusercontent.com/Tax-Script/TaxHub/main/VexonHub"))()
+end)
+
+BattleTab:Button("复制VexonHub卡密", function()
+    setclipboard("VexonHub_4D")
 end)
 
 BattleTab:Button("phantasm Kenny汉化", function()
