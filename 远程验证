@@ -176,7 +176,7 @@ spawn(function()
     end
 end)
 
-UniversalTab:Toggle("启用平移加速度", nil, "启用自定义移动速度", function(state)
+UniversalTab:Toggle("启用速度", nil, "启用自定义移动速度", function(state)
     speedEnabled = state
     if not state then
         setSpeed(16)
@@ -185,7 +185,7 @@ UniversalTab:Toggle("启用平移加速度", nil, "启用自定义移动速度",
     end
 end)
 
-UniversalTab:Slider("平移加速度", 16, 1000, 16, function(value)
+UniversalTab:Slider("速度", 16, 1000, 16, function(value)
     currentSpeed = value
     if speedEnabled then
         setSpeed(value)
