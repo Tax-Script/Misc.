@@ -144,6 +144,70 @@ local UltimateBattleTab = Window:Tab("终极战场", "rbxassetid://10723415335")
 local PlantTab = Window:Tab("植物大战机器人", "rbxassetid://10709782497")
 local SlapTab = Window:Tab("巴掌大战", "rbxassetid://10723407389")
 
+UniversalTab:Seperator("数值修改")
+local speedEnabled = false
+local currentSpeed = 16
+
+UniversalTab:Toggle("启用速度修改", {"开启", "关闭"}, "启用自定义移动速度", function(state)
+    speedEnabled = state
+    local player = game.Players.LocalPlayer
+    if player.Character then
+        local humanoid = player.Character:FindFirstChildOfClass("Humanoid")
+        if humanoid then
+            if speedEnabled then
+                humanoid.WalkSpeed = currentSpeed
+            else
+                humanoid.WalkSpeed = 16
+            end
+        end
+    end
+end)
+
+UniversalTab:Slider("移动速度", 16, 1000, 16, function(value)
+    currentSpeed = value
+    if speedEnabled then
+        local player = game.Players.LocalPlayer
+        if player.Character then
+            local humanoid = player.Character:FindFirstChildOfClass("Humanoid")
+            if humanoid then
+                humanoid.WalkSpeed = value
+            end
+        end
+    end
+end)
+
+local jumpEnabled = false
+local currentJump = 50
+
+UniversalTab:Toggle("启用跳跃修改", {"开启", "关闭"}, "启用自定义跳跃高度", function(state)
+    jumpEnabled = state
+    local player = game.Players.LocalPlayer
+    if player.Character then
+        local humanoid = player.Character:FindFirstChildOfClass("Humanoid")
+        if humanoid then
+            if jumpEnabled then
+                humanoid.JumpPower = currentJump
+            else
+                humanoid.JumpPower = 50
+            end
+        end
+    end
+end)
+
+UniversalTab:Slider("跳跃高度", 50, 500, 50, function(value)
+    currentJump = value
+    if jumpEnabled then
+        local player = game.Players.LocalPlayer
+        if player.Character then
+            local humanoid = player.Character:FindFirstChildOfClass("Humanoid")
+            if humanoid then
+                humanoid.JumpPower = value
+            end
+        end
+    end
+end)
+
+UniversalTab:Seperator("其他")
 UniversalTab:Button("飞行", function()
     loadstring(game:HttpGet("https://raw.githubusercontent.com/Tax-Script/Misc./refs/heads/main/flyv3"))()
 end)
