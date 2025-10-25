@@ -147,63 +147,64 @@ local SlapTab = Window:Tab("巴掌大战", "rbxassetid://10723407389")
 UniversalTab:Seperator("数值修改")
 local speedEnabled = false
 local currentSpeed = 16
+local jumpEnabled = false
+local currentJump = 50
 
-UniversalTab:Toggle("启用速度修改", {"开启", "关闭"}, "启用自定义移动速度", function(state)
-    speedEnabled = state
+local function setSpeed(value)
     local player = game.Players.LocalPlayer
-    if player.Character then
-        local humanoid = player.Character:FindFirstChildOfClass("Humanoid")
-        if humanoid then
-            if speedEnabled then
-                humanoid.WalkSpeed = currentSpeed
-            else
-                humanoid.WalkSpeed = 16
-            end
+    if player.Character and player.Character:FindFirstChildOfClass("Humanoid") then
+        player.Character.Humanoid.WalkSpeed = value
+    end
+end
+
+local function setJump(value)
+    local player = game.Players.LocalPlayer
+    if player.Character and player.Character:FindFirstChildOfClass("Humanoid") then
+        player.Character.Humanoid.JumpPower = value
+    end
+end
+
+spawn(function()
+    while true do
+        if speedEnabled then
+            setSpeed(currentSpeed)
         end
+        if jumpEnabled then
+            setJump(currentJump)
+        end
+        wait(0.5)
+    end
+end)
+
+UniversalTab:Toggle("启用速度修改", nil, "启用自定义移动速度", function(state)
+    speedEnabled = state
+    if not state then
+        setSpeed(16)
+    else
+        setSpeed(currentSpeed)
     end
 end)
 
 UniversalTab:Slider("移动速度", 16, 1000, 16, function(value)
     currentSpeed = value
     if speedEnabled then
-        local player = game.Players.LocalPlayer
-        if player.Character then
-            local humanoid = player.Character:FindFirstChildOfClass("Humanoid")
-            if humanoid then
-                humanoid.WalkSpeed = value
-            end
-        end
+        setSpeed(value)
     end
 end)
 
-local jumpEnabled = false
-local currentJump = 50
-
-UniversalTab:Toggle("启用跳跃修改", {"开启", "关闭"}, "启用自定义跳跃高度", function(state)
+UniversalTab:Toggle("启用跳跃修改", nil, "启用自定义跳跃高度", function(state)
     jumpEnabled = state
-    local player = game.Players.LocalPlayer
-    if player.Character then
-        local humanoid = player.Character:FindFirstChildOfClass("Humanoid")
-        if humanoid then
-            if jumpEnabled then
-                humanoid.JumpPower = currentJump
-            else
-                humanoid.JumpPower = 50
-            end
-        end
+    if not state then
+        setJump(50)
+    else
+        setJump(currentJump)
     end
 end)
 
 UniversalTab:Slider("跳跃高度", 50, 500, 50, function(value)
     currentJump = value
     if jumpEnabled then
-        local player = game.Players.LocalPlayer
-        if player.Character then
-            local humanoid = player.Character:FindFirstChildOfClass("Humanoid")
-            if humanoid then
-                humanoid.JumpPower = value
-            end
-        end
+        setJump(value)
     end
 end)
 
