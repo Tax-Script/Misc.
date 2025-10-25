@@ -51,12 +51,7 @@ replaceWTB()
 
 local Players = game:GetService("Players")
 local TweenService = game:GetService("TweenService")
-local Lighting = game:GetService("Lighting")
 local player = Players.LocalPlayer
-
-local blur = Instance.new("BlurEffect", Lighting)
-blur.Size = 0
-TweenService:Create(blur, TweenInfo.new(0.5), {Size = 24}):Play()
 
 local screenGui = Instance.new("ScreenGui", player:WaitForChild("PlayerGui"))
 screenGui.Name = "StellarLoader"
@@ -67,15 +62,12 @@ local frame = Instance.new("Frame", screenGui)
 frame.Size = UDim2.new(1, 0, 1, 0)
 frame.BackgroundTransparency = 1
 
-local function tweenOutAndDestroy()
-    TweenService:Create(blur, TweenInfo.new(0.5), {Size = 0}):Play()
-    wait(0.6)
+local function destroyLoader()
+    wait(2)
     screenGui:Destroy()
-    blur:Destroy()
 end
 
-wait(2)
-tweenOutAndDestroy()
+destroyLoader()
 
 local StellarLibrary = (loadstring(game:HttpGet("https://raw.githubusercontent.com/Potato5466794/GC-WTB/refs/heads/main/UI/WTB-UI.luau")))();
 if StellarLibrary:LoadAnimation() then
