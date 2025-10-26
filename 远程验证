@@ -219,8 +219,8 @@ UniversalTab:Toggle("触碰甩飞", nil, "触碰其他玩家将其甩飞", funct
         flingThread = task.spawn(function()
             local Players = game:GetService("Players")
             local RunService = game:GetService("RunService")
-            local flingPower = 2500
-            local movel = 0.05
+            local flingPower = 5000
+            local movel = 0.5
             local lp = Players.LocalPlayer
             local character = lp.Character or lp.CharacterAdded:Wait()
             local hrp = character:WaitForChild("HumanoidRootPart")
