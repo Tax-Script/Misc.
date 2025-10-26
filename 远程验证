@@ -58,7 +58,7 @@ local blur = Instance.new("BlurEffect", Lighting)
 blur.Size = 0
 TweenService:Create(blur, TweenInfo.new(0.5), {Size = 24}):Play()
 
-local screenGui = Instance.new("ScreenGui", player:WaitForChild("PlayerGui")
+local screenGui = Instance.new("ScreenGui", player:WaitForChild("PlayerGui"))
 screenGui.Name = "StellarLoader"
 screenGui.ResetOnSpawn = false
 screenGui.IgnoreGuiInset = true
