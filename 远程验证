@@ -58,7 +58,7 @@ local blur = Instance.new("BlurEffect", Lighting)
 blur.Size = 0
 TweenService:Create(blur, TweenInfo.new(0.5), {Size = 24}):Play()
 
-local screenGui = Instance.new("ScreenGui", player:WaitForChild("PlayerGui"))
+local screenGui = Instance.new("ScreenGui", player:WaitForChild("PlayerGui")
 screenGui.Name = "StellarLoader"
 screenGui.ResetOnSpawn = false
 screenGui.IgnoreGuiInset = true
@@ -137,16 +137,16 @@ local Window = StellarLibrary:Window({
     TabWidth = 140
 })
 
-local InfoTab = Window:Tab("信息", "rbxassetid://10723407389")
+local InfoTab = Window:Tab("信息", "rbxassetid://128891143813807")
 local UniversalTab = Window:Tab("通用", "rbxassetid://10723407389")
-local PartUniversalTab = Window:Tab("部分通用加载器", "rbxassetid://10723407389")
-local BattleTab = Window:Tab("最强战场", "rbxassetid://10723415335") 
-local UltimateBattleTab = Window:Tab("终极战场", "rbxassetid://10723415335")
+local PartUniversalTab = Window:Tab("部分通用加载器", "rbxassetid://10734950309")
+local BattleTab = Window:Tab("最强战场", "rbxassetid://10723415335")
+local UltimateBattleTab = Window:Tab("终极战场", "rbxassetid://10734984606")
 local PlantTab = Window:Tab("植物大战机器人", "rbxassetid://10709782497")
-local SlapTab = Window:Tab("巴掌大战", "rbxassetid://10723407389")
+local SlapTab = Window:Tab("巴掌大战", "rbxassetid://10747373176")
 
 InfoTab:Seperator("声明")
-InfoTab:Label("此脚本为免费脚本，请勿用于商业用途")
+InfoTab:Label("此脚本完全免费，请勿用于商业用途")
 InfoTab:Button("加入我们（QQ）", function()
     setclipboard("885775764")
 end)
