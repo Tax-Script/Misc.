@@ -208,6 +208,40 @@ UniversalTab:Slider("跳跃高度", 50, 500, 50, function(value)
     end
 end)
 
+UniversalTab:Seperator("玩家互动")
+local flingEnabled = false
+local flingThread = nil
+
+UniversalTab:Toggle("触碰甩飞", nil, "触碰其他玩家将其甩飞", function(state)
+    flingEnabled = state
+    if flingEnabled then
+        if flingThread then return end
+        flingThread = task.spawn(function()
+            local Players = game:GetService("Players")
+            local RunService = game:GetService("RunService")
+            local flingPower = 2500
+            local movel = 0.05
+            local lp = Players.LocalPlayer
+            local character = lp.Character or lp.CharacterAdded:Wait()
+            local hrp = character:WaitForChild("HumanoidRootPart")
+            while flingEnabled do
+                RunService.Heartbeat:Wait()
+                local originalVelocity = hrp.Velocity
+                hrp.Velocity = originalVelocity * 1.5 + Vector3.new(0, flingPower, 0)
+                RunService.RenderStepped:Wait()
+                hrp.Velocity = originalVelocity * 0.8
+                RunService.Stepped:Wait()
+                hrp.Velocity = originalVelocity + Vector3.new(0, movel, 0)
+                movel = -movel
+            end
+            flingThread = nil
+        end)
+    else
+        flingEnabled = false
+        flingThread = nil
+    end
+end)
+
 UniversalTab:Seperator("其他")
 UniversalTab:Button("飞行", function()
     loadstring(game:HttpGet("https://raw.githubusercontent.com/Tax-Script/Misc./refs/heads/main/flyv3"))()
