@@ -1,0 +1,319 @@
+local WindUI = loadstring(game:HttpGet("https://raw.githubusercontent.com/Footagesus/WindUI/main/dist/main.lua"))()
+
+-- 创建窗口
+local Window = WindUI:CreateWindow({
+    Title = "WindUI 完整示例",
+    Author = "by TAX - 组件演示",
+    Folder = "windui_example",
+    NewElements = true,
+    
+    OpenButton = {
+        Title = "打开UI界面",
+        CornerRadius = UDim.new(1,0),
+        StrokeThickness = 3,
+        Enabled = true,
+        Draggable = true,
+        
+        Color = ColorSequence.new(
+            Color3.fromHex("#30FF6A"), 
+            Color3.fromHex("#e7ff2f")
+        )
+    }
+})
+
+-- 基础组件部分
+local ElementsSection = Window:Section({
+    Title = "基础组件",
+})
+
+-- 1. 开关组件
+local ToggleTab = ElementsSection:Tab({
+    Title = "开关",
+    Icon = "arrow-left-right"
+})
+
+ToggleTab:Toggle({
+    Title = "开关",
+})
+
+ToggleTab:Space()
+
+ToggleTab:Toggle({
+    Title = "开关",
+    Desc = "开关示例"
+})
+
+ToggleTab:Space()
+
+ToggleTab:Toggle({
+    Title = "开关",
+    Locked = true,
+})
+
+ToggleTab:Toggle({
+    Title = "开关",
+    Desc = "开关示例",
+    Locked = true,
+})
+
+-- 2. 按钮组件
+local ButtonTab = ElementsSection:Tab({
+    Title = "按钮",
+    Icon = "mouse-pointer-click",
+})
+
+ButtonTab:Button({
+    Title = "按钮",
+})
+
+ButtonTab:Space()
+
+ButtonTab:Button({
+    Title = "按钮",
+    Desc = "按钮示例"
+})
+
+ButtonTab:Space()
+
+ButtonTab:Button({
+    Title = "按钮",
+    Locked = true,
+})
+
+ButtonTab:Button({
+    Title = "按钮",
+    Desc = "按钮示例",
+    Locked = true,
+})
+
+-- 3. 输入框组件
+local InputTab = ElementsSection:Tab({
+    Title = "输入框",
+    Icon = "text-cursor-input",
+})
+
+InputTab:Input({
+    Title = "输入框",
+})
+
+InputTab:Space()
+
+InputTab:Input({
+    Title = "输入框",
+    Desc = "输入框示例"
+})
+
+InputTab:Space()
+
+InputTab:Input({
+    Title = "输入框",
+    Locked = true,
+})
+
+InputTab:Input({
+    Title = "输入框",
+    Desc = "输入框示例",
+    Locked = true,
+})
+
+-- 配置使用部分
+local ConfigUsageSection = Window:Section({
+    Title = "配置使用",
+})
+
+-- 4. 配置元素
+local ConfigElementsTab = ConfigUsageSection:Tab({
+    Title = "配置元素",
+    Icon = "square-dashed-mouse-pointer",
+})
+
+ConfigElementsTab:Colorpicker({
+    Flag = "ColorpickerTest",
+    Title = "颜色选择器",
+    Desc = "颜色选择器描述",
+    Default = Color3.fromRGB(0, 255, 0),
+    Transparency = 0,
+    Locked = false,
+    Callback = function(color) 
+        print("颜色: " .. tostring(color))
+    end
+})
+
+ConfigElementsTab:Space()
+
+ConfigElementsTab:Dropdown({
+    Flag = "DropdownTest",
+    Title = "下拉菜单",
+    Values = {"选项A", "选项B", "选项C"},
+    Value = "选项A",
+    Callback = function(option) 
+        print("选择了: " .. option) 
+    end
+})
+
+ConfigElementsTab:Space()
+
+ConfigElementsTab:Input({
+    Flag = "InputTest",
+    Title = "输入框",
+    Desc = "输入框描述",
+    Value = "默认值",
+    Placeholder = "输入文本...",
+    Callback = function(input) 
+        print("输入: " .. input)
+    end
+})
+
+ConfigElementsTab:Space()
+
+ConfigElementsTab:Keybind({
+    Flag = "KeybindTest",
+    Title = "按键绑定",
+    Desc = "按键绑定描述",
+    Value = "G",
+    Callback = function(v)
+        print("按键: " .. v)
+    end
+})
+
+ConfigElementsTab:Space()
+
+ConfigElementsTab:Slider({
+    Flag = "SliderTest",
+    Title = "滑块",
+    Step = 1,
+    Value = {
+        Min = 20,
+        Max = 120,
+        Default = 70,
+    },
+    Callback = function(value)
+        print("滑块值: " .. value)
+    end
+})
+
+ConfigElementsTab:Space()
+
+ConfigElementsTab:Toggle({
+    Flag = "ToggleTest",
+    Title = "开关",
+    Desc = "开关描述",
+    Default = false,
+    Callback = function(state) 
+        print("开关状态: " .. tostring(state))
+    end
+})
+
+-- 5. 配置面板
+local ConfigTab = ConfigUsageSection:Tab({
+    Title = "配置面板",
+    Icon = "folder",
+})
+
+local ConfigManager = Window.ConfigManager
+local ConfigName = "default"
+
+local ConfigNameInput = ConfigTab:Input({
+    Title = "配置名称",
+    Icon = "file-cog",
+    Callback = function(value)
+        ConfigName = value
+    end
+})
+
+ConfigTab:Space()
+
+ConfigTab:Button({
+    Title = "保存配置",
+    Icon = "save",
+    Justify = "Center",
+    Callback = function()
+        Window.CurrentConfig = ConfigManager:CreateConfig(ConfigName)
+        if Window.CurrentConfig:Save() then
+            WindUI:Notify({
+                Title = "配置已保存",
+                Content = "配置 '" .. ConfigName .. "' 已保存"
+            })
+        end
+    end
+})
+
+ConfigTab:Space()
+
+ConfigTab:Button({
+    Title = "加载配置",
+    Icon = "refresh-cw",
+    Justify = "Center",
+    Callback = function()
+        Window.CurrentConfig = ConfigManager:CreateConfig(ConfigName)
+        if Window.CurrentConfig:Load() then
+            WindUI:Notify({
+                Title = "配置已加载",
+                Content = "配置 '" .. ConfigName .. "' 已加载"
+            })
+        end
+    end
+})
+
+-- 其他组件部分
+local OtherSection = Window:Section({
+    Title = "其他组件",
+})
+
+-- 6. 文本和图片
+local DisplayTab = OtherSection:Tab({
+    Title = "显示组件",
+})
+
+DisplayTab:Section({
+    Title = "文本标题",
+    TextSize = 24,
+    FontWeight = Enum.FontWeight.SemiBold,
+})
+
+DisplayTab:Space()
+
+DisplayTab:Section({
+    Title = "普通文本描述",
+    TextSize = 18,
+    TextTransparency = .35,
+    FontWeight = Enum.FontWeight.Medium,
+})
+
+DisplayTab:Space({ Columns = 3 })
+
+DisplayTab:Image({
+    Image = "https://repository-images.githubusercontent.com/880118829/428bedb1-dcbd-43d5-bc7f-3beb2e9e0177",
+    AspectRatio = "16:9",
+    Radius = 9,
+})
+
+-- 7. 特殊按钮
+local SpecialTab = OtherSection:Tab({
+    Title = "特殊功能",
+})
+
+SpecialTab:Button({
+    Title = "销毁窗口",
+    Color = Color3.fromHex("#ff4830"),
+    Justify = "Center",
+    Icon = "shredder",
+    IconAlign = "Left",
+    Callback = function()
+        Window:Destroy()
+    end
+})
+
+SpecialTab:Space()
+
+SpecialTab:Button({
+    Title = "发送通知",
+    Color = Color3.fromHex("#305dff"),
+    Justify = "Center",
+    Callback = function()
+        WindUI:Notify({
+            Title = "测试通知",
+            Content = "这是一个测试通知！"
+        })
+    end
+})
