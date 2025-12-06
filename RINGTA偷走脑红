@@ -1,0 +1,174 @@
+local Translations = {
+    ["If you have any steal a Brainrot code like Instant Steal or something op that will be useful for this script DM me on Discord."] = "如果你有类似即时偷取或其他对此脚本有用的强力功能代码，请通过Discord私信我。",
+    ["Alright guys join the RINGTA We will give you credit and give you the role called contributor since that's where updates and everything happens and new scripts and you get to talk to cool people and have fun and yea."] = "大家快来加入RINGTA，我们会给你鸣谢并授予你贡献者角色，因为那里是更新和所有事情发生的地方，有新脚本，你可以和酷炫的人聊天并享受乐趣。",
+    ["and also,if you want to make a YouTube video on this script and give me the YouTube video link, we will give you the premium rare brainrot tracker which can find 10m+ brainrots."] = "另外，如果你想制作一个关于这个脚本的YouTube视频并给我YouTube视频链接，我们会给你可以找到1000万+脑红的高级稀有脑红追踪器。",
+    ["Random Features (DO NOT WORK WHILE STEALING)"] = "随机功能（偷取时不可用）",
+    ["The way the pet finder works is by 3 roblox bots in 3 different servers and also IT TRACKS EVERY BRAINROT INSIDE OF THE SERVER OF THE PLAYER THAT EXECUTES THE SCRIPT. Which means IF YOU HAVE RARE BRAINROTS STORE IST IN ALT ACCOUNT THEN USE SCRIPT OR ELSE RISK OFSTOLEN"] = "宠物查找器的工作原理是通过3个Roblox机器人在3个不同的服务器工作，并且它会追踪执行脚本的玩家服务器内的所有脑红。这意味着如果你拥有稀有脑红，请存储在备用账户中再使用脚本，否则有被偷的风险。",
+    ["Current autoload config: none"] = "当前自动加载配置：无",
+    ["Credit"] = "鸣谢",
+    ["Discord"] = "Discord",
+    ["Extra Code Info"] = "额外代码信息",
+    ["JOIN DISCORD SERVER"] = "加入DISCORD服务器",
+    ["PLEASE JOIN DISCORD SERVER"] = "请加入DISCORD服务器",
+    ["ESP Features"] = "ESP功能",
+    ["Player ESP"] = "玩家ESP",
+    ["ESP Your Base"] = "基地ESP",
+    ["Visual Utilities"] = "视觉工具",
+    ["Esp Most Expensive Brainrot"] = "显示最贵脑红",
+    ["View Base Lock Timers"] = "查看基地锁定时间",
+    ["Main Features"] = "主要功能",
+    ["Desync/AntHit"] = "反同步/反命中",
+    ["Boost Speed"] = "加速",
+    ["Steal Helper Gui"] = "偷取助手界面",
+    ["Infinite Jump"] = "无限跳",
+    ["Antisteal (OP)"] = "反偷取（强力）",
+    ["Anti Ragdoll"] = "反布娃娃",
+    ["Theme list"] = "主题列表",
+    ["Default"] = "默认",
+    ["Set as default"] = "设为默认",
+    ["Custom theme name"] = "自定义主题名称",
+    ["Create theme"] = "创建主题",
+    ["Custom themes"] = "自定义主题",
+    ["Load theme"] = "加载主题",
+    ["Overwrite theme"] = "覆盖主题",
+    ["Delete theme"] = "删除主题",
+    ["Refresh list"] = "刷新列表",
+    ["Reset default"] = "重置默认",
+    ["Finder Features"] = "查找器功能",
+    ["PET FINDER"] = "宠物查找器",
+    ["How The Pet Finder Works"] = "宠物查找器工作原理",
+    ["Menu"] = "菜单",
+    ["Open Keybind Menu"] = "打开按键绑定菜单",
+    ["Custom Cursor"] = "自定义光标",
+    ["Notification Side"] = "通知位置",
+    ["Right"] = "右侧",
+    ["DPI Scale"] = "DPI缩放",
+    ["100%"] = "100%",
+    ["Menu bind"] = "菜单绑定",
+    ["RightControl"] = "右Ctrl键",
+    ["Unload"] = "卸载",
+    ["Configuration"] = "配置",
+    ["Config name"] = "配置名称",
+    ["Create config"] = "创建配置",
+    ["Config list"] = "配置列表",
+    ["Load config"] = "加载配置",
+    ["Overwrite config"] = "覆盖配置",
+    ["Delete config"] = "删除配置",
+    ["Set as autoload"] = "设为自动加载",
+    ["Reset autoload"] = "重置自动加载",
+    ["Themes"] = "主题",
+    ["Background color"] = "背景颜色",
+    ["Main color"] = "主颜色",
+    ["Accent color"] = "强调色",
+    ["Outline color"] = "轮廓颜色",
+    ["Font color"] = "字体颜色",
+    ["Font Face"] = "字体样式",
+    ["Code"] = "代码",
+    ["Brainrot"] = "脑红",
+    ["brainrot"] = "脑红",
+    ["Brainrots"] = "脑红",
+    ["brainrots"] = "脑红",
+    ["steal a Brainrot"] = "偷取脑红",
+    ["Steal a Brainrot"] = "偷取脑红",
+}
+
+local function translateText(text)
+    if not text or type(text) ~= "string" then return text end
+    if Translations[text] then return Translations[text] end
+    for en, cn in pairs(Translations) do
+        if text:find(en) then return text:gsub(en, cn) end
+    end
+    return text
+end
+
+local translatedElements = {}
+local originalTexts = {}
+
+local function safeTranslateElement(element)
+    if translatedElements[element] then return end
+    
+    pcall(function()
+        if element:IsA("TextLabel") or element:IsA("TextButton") or element:IsA("TextBox") then
+            local currentText = element.Text
+            if currentText and currentText ~= "" then
+                if not originalTexts[element] then
+                    originalTexts[element] = currentText
+                end
+                
+                local translatedText = translateText(currentText)
+                if translatedText ~= currentText then
+                    element.Text = translatedText
+                    translatedElements[element] = true
+                end
+            end
+        end
+    end)
+end
+
+local function setupSmartListener()
+    local function onTextPropertyChanged(element)
+        if translatedElements[element] then
+            local currentText = element.Text
+            local originalText = originalTexts[element]
+            
+            if currentText == originalText or translateText(currentText) == currentText then
+                translatedElements[element] = nil
+                return
+            end
+            
+            local translatedText = translateText(currentText)
+            if translatedText ~= currentText then
+                element.Text = translatedText
+            end
+        else
+            safeTranslateElement(element)
+        end
+    end
+
+    local function addSmartListener(parent)
+        parent.DescendantAdded:Connect(function(descendant)
+            task.wait(0.3)
+            safeTranslateElement(descendant)
+            
+            if descendant:IsA("TextLabel") or descendant:IsA("TextButton") or descendant:IsA("TextBox") then
+                descendant:GetPropertyChangedSignal("Text"):Connect(function()
+                    task.wait(0.1)
+                    onTextPropertyChanged(descendant)
+                end)
+            end
+        end)
+    end
+    
+    pcall(addSmartListener, game:GetService("CoreGui"))
+    local player = game:GetService("Players").LocalPlayer
+    if player and player:FindFirstChild("PlayerGui") then
+        pcall(addSmartListener, player.PlayerGui)
+    end
+end
+
+local function delayedInitialTranslate()
+    task.wait(5)
+    
+    for _, gui in ipairs(game:GetService("CoreGui"):GetDescendants()) do
+        safeTranslateElement(gui)
+    end
+    
+    local player = game:GetService("Players").LocalPlayer
+    if player and player:FindFirstChild("PlayerGui") then
+        for _, gui in ipairs(player.PlayerGui:GetDescendants()) do
+            safeTranslateElement(gui)
+        end
+    end
+end
+
+task.wait(2)
+setupSmartListener()
+delayedInitialTranslate()
+
+local success, err = pcall(function()
+    loadstring(game:HttpGet("https://raw.githubusercontent.com/ringta9321/steala.github.io/refs/heads/main/brainrot.lua"))()
+end)
+
+if not success then
+    warn("加载失败:", err)
+end
