@@ -1,0 +1,172 @@
+local RunScriptFirst = false
+
+local Translations = {
+    ["General"] = "常规",
+    ["Visuals"] = "视觉",
+    ["Misc."] = "杂项",
+    ["UI Settings"] = "界面设置",
+    ["Configuration"] = "配置管理",
+    ["Auto Farm"] = "自动刷取",
+    ["Spectate"] = "观战模式",
+    ["Auto Use Skills"] = "自动使用技能",
+    ["Select Skills"] = "选择技能",
+    ["Auto Dodge [Unstable]"] = "自动闪避",
+    ["Hit Count"] = "连击数",
+    ["Offset X"] = "水平偏移 X",
+    ["Offset Y"] = "高度偏移 Y",
+    ["Offset Z"] = "前后偏移 Z",
+    ["Auto Heal"] = "自动回血",
+    ["Correct Heal when Health %"] = "低于此百分比时回血",
+    ["Safe Mode"] = "安全模式",
+    ["Start Safe Mode at Health %"] = "低于此百分比开启安全",
+    ["Recover till Health %"] = "恢复至此百分比后停止",
+    ["Lobby"] = "大厅设置",
+    ["Auto Create Room"] = "自动创建房间",
+    ["OnlyFriends"] = "仅限好友",
+    ["Max Players"] = "最大玩家数",
+    ["Difficult"] = "难度选择",
+    ["Select World"] = "选择地图",
+    ["Summon Gate"] = "召唤之门",
+    ["Summon Station - 1"] = "召唤站 1",
+    ["Summon Station - 2"] = "召唤站 2",
+    ["Statue's Cave"] = "雕像洞穴",
+    ["Raid"] = "突袭",
+    ["Infinite"] = "无尽模式",
+    ["Cracker Land"] = "饼干大地",
+    ["Auto Replay"] = "自动重开",
+    ["Rollback"] = "数据回滚",
+    ["Patched"] = "已修复",
+    ["Priority"] = "优先级",
+    ["Boss"] = "首领",
+    ["Golem"] = "石像鬼",
+    ["Goblin Mage"] = "哥布林法师",
+    ["Monkey"] = "猴子",
+    ["Wolf"] = "狼",
+    ["Bomber Goblin"] = "炸弹哥布林",
+    ["Goblin"] = "哥布林",
+    ["No Camera Shake"] = "禁止镜头抖动",
+    ["FPS Boost"] = "帧率优化",
+    ["Rejoin On Kick"] = "被踢自动重连",
+    ["Redeem All Codes"] = "兑换所有代码",
+    ["Sky"] = "天空设置",
+    ["Select Sky"] = "选择天空贴图",
+    ["DefaultSky"] = "默认天空",
+    ["Sky Rotation"] = "天空旋转",
+    ["Rotation Speed"] = "旋转速度",
+    ["Menu"] = "菜单设置",
+    ["Open Keybind Menu"] = "打开按键菜单",
+    ["Custom Cursor"] = "自定义光标",
+    ["Notification Side"] = "通知位置",
+    ["Right"] = "右侧",
+    ["DPI Scale"] = "缩放比例",
+    ["Menu bind"] = "菜单键",
+    ["RightShift"] = "右侧Shift",
+    ["Unload"] = "卸载脚本",
+    ["Themes"] = "主题配色",
+    ["Background color"] = "背景颜色",
+    ["Main color"] = "主色调",
+    ["Accent color"] = "强调色",
+    ["Outline color"] = "边框颜色",
+    ["Font color"] = "字体颜色",
+    ["Font Face"] = "字体样式",
+    ["Code"] = "代码体",
+    ["Theme list"] = "主题列表",
+    ["Default"] = "默认",
+    ["Set as default"] = "设为默认",
+    ["Custom theme name"] = "主题名称",
+    ["Create theme"] = "创建主题",
+    ["Custom themes"] = "自定义列表",
+    ["Load theme"] = "加载主题",
+    ["Overwrite theme"] = "覆盖主题",
+    ["Delete theme"] = "删除主题",
+    ["Refresh list"] = "刷新列表",
+    ["Reset default"] = "重置默认",
+    ["Config name"] = "配置名称",
+    ["Create config"] = "创建配置",
+    ["Config list"] = "配置列表",
+    ["Load config"] = "加载配置",
+    ["Overwrite config"] = "覆盖配置",
+    ["Delete config"] = "删除配置",
+    ["Set as autoload"] = "设为自动加载",
+    ["Reset autoload"] = "重置自动加载",
+    ["Current autoload config: none"] = "当前自动加载：无",
+}
+
+local function translateText(text)
+    if not text or type(text) ~= "string" then return text end
+    if Translations[text] then return Translations[text] end
+    for en, cn in pairs(Translations) do
+        if text:find(en, 1, true) then return text:gsub(en, cn) end
+    end
+    return text
+end
+
+local function translateAllElements()
+    local function translateGui(gui)
+        for _, element in ipairs(gui:GetDescendants()) do
+            if element:IsA("TextLabel") or element:IsA("TextButton") or element:IsA("TextBox") then
+                local currentText = element.Text
+                if currentText and currentText ~= "" then
+                    local translatedText = translateText(currentText)
+                    if translatedText ~= currentText then
+                        element.Text = translatedText
+                    end
+                end
+            end
+        end
+    end
+    pcall(translateGui, game:GetService("CoreGui"))
+    local player = game:GetService("Players").LocalPlayer
+    if player and player:FindFirstChild("PlayerGui") then
+        pcall(translateGui, player.PlayerGui)
+    end
+end
+
+local function setupListener()
+    local function connectToGui(gui)
+        gui.DescendantAdded:Connect(function(descendant)
+            if descendant:IsA("TextLabel") or descendant:IsA("TextButton") or descendant:IsA("TextBox") then
+                local currentText = descendant.Text
+                if currentText and currentText ~= "" then
+                    local translatedText = translateText(currentText)
+                    if translatedText ~= currentText then
+                        descendant.Text = translatedText
+                    end
+                end
+                descendant:GetPropertyChangedSignal("Text"):Connect(function()
+                    local newText = descendant.Text
+                    if newText and newText ~= "" then
+                        local translatedText = translateText(newText)
+                        if translatedText ~= newText then
+                            descendant.Text = translatedText
+                        end
+                    end
+                end)
+            end
+        end)
+    end
+    pcall(connectToGui, game:GetService("CoreGui"))
+    local player = game:GetService("Players").LocalPlayer
+    if player and player:FindFirstChild("PlayerGui") then
+        pcall(connectToGui, player.PlayerGui)
+    end
+end
+
+local function startTranslation()
+    translateAllElements()
+    setupListener()
+end
+
+local function loadScript()
+    local success, err = pcall(function()
+        loadstring(game:HttpGet("https://api.luarmor.net/files/v3/loaders/984cd0fac08abc8c1f8b9eeab9125263.lua"))()
+    end)
+end
+
+if RunScriptFirst then
+    loadScript()
+    startTranslation()
+else
+    startTranslation()
+    loadScript()
+end
