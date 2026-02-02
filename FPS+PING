@@ -1,0 +1,123 @@
+local Players = game:GetService("Players")
+local RunService = game:GetService("RunService")
+local Stats = game:GetService("Stats")
+local player = Players.LocalPlayer
+
+local screenGui = Instance.new("ScreenGui")
+screenGui.Name = "FPSPingDisplay"
+screenGui.ResetOnSpawn = false
+screenGui.DisplayOrder = 99999
+screenGui.IgnoreGuiInset = true
+
+local frame = Instance.new("Frame")
+frame.Size = UDim2.new(0, 120, 0, 40)
+frame.Position = UDim2.new(0, 10, 1, -50)
+frame.BackgroundTransparency = 1
+
+local fpsText = Instance.new("TextLabel")
+fpsText.Size = UDim2.new(1, 0, 0.5, 0)
+fpsText.Position = UDim2.new(0, 0, 0, 0)
+fpsText.BackgroundTransparency = 1
+fpsText.Text = "FPS: 0"
+fpsText.TextColor3 = Color3.new(1, 1, 1)
+fpsText.Font = Enum.Font.Code
+fpsText.TextSize = 14
+fpsText.TextXAlignment = Enum.TextXAlignment.Left
+
+local pingText = Instance.new("TextLabel")
+pingText.Size = UDim2.new(1, 0, 0.5, 0)
+pingText.Position = UDim2.new(0, 0, 0.5, 0)
+pingText.BackgroundTransparency = 1
+pingText.Text = "Ping: 0ms"
+pingText.TextColor3 = Color3.new(1, 1, 1)
+pingText.Font = Enum.Font.Code
+pingText.TextSize = 14
+pingText.TextXAlignment = Enum.TextXAlignment.Left
+
+fpsText.Parent = frame
+pingText.Parent = frame
+frame.Parent = screenGui
+screenGui.Parent = player:WaitForChild("PlayerGui")
+
+local fps = 0
+local fpsCounter = 0
+local lastFpsUpdate = tick()
+
+local function getFPSColor(fpsValue)
+    if fpsValue >= 120 then
+        return Color3.fromRGB(0, 255, 0)       -- 亮绿：优秀
+    elseif fpsValue >= 90 then
+        return Color3.fromRGB(100, 255, 100)   -- 浅绿：很好
+    elseif fpsValue >= 60 then
+        return Color3.fromRGB(150, 255, 150)   -- 淡绿：良好
+    elseif fpsValue >= 45 then
+        return Color3.fromRGB(255, 255, 100)   -- 黄色：中等
+    elseif fpsValue >= 30 then
+        return Color3.fromRGB(255, 200, 50)    -- 橙黄：一般
+    elseif fpsValue >= 20 then
+        return Color3.fromRGB(255, 150, 50)    -- 橙色：较差
+    elseif fpsValue >= 10 then
+        return Color3.fromRGB(255, 100, 50)    -- 红橙：差
+    else
+        return Color3.fromRGB(255, 50, 50)     -- 红色：很差
+    end
+end
+
+local function getPingColor(pingValue)
+    if pingValue < 30 then
+        return Color3.fromRGB(0, 255, 0)       -- 亮绿：极佳
+    elseif pingValue < 60 then
+        return Color3.fromRGB(100, 255, 100)   -- 浅绿：优秀
+    elseif pingValue < 100 then
+        return Color3.fromRGB(150, 255, 150)   -- 淡绿：良好
+    elseif pingValue < 150 then
+        return Color3.fromRGB(255, 255, 100)   -- 黄色：中等
+    elseif pingValue < 200 then
+        return Color3.fromRGB(255, 200, 50)    -- 橙黄：一般
+    elseif pingValue < 300 then
+        return Color3.fromRGB(255, 150, 50)    -- 橙色：较差
+    elseif pingValue < 500 then
+        return Color3.fromRGB(255, 100, 50)    -- 红橙：差
+    else
+        return Color3.fromRGB(255, 50, 50)     -- 红色：极差
+    end
+end
+
+RunService.Heartbeat:Connect(function()
+    fpsCounter = fpsCounter + 1
+    local currentTime = tick()
+    
+    if currentTime - lastFpsUpdate >= 0.3 then
+        fps = math.floor(fpsCounter / (currentTime - lastFpsUpdate))
+        fpsCounter = 0
+        lastFpsUpdate = currentTime
+        
+        fpsText.TextColor3 = getFPSColor(fps)
+        fpsText.Text = "FPS: " .. fps
+    end
+    
+    local ping = 0
+    
+    local success, result = pcall(function()
+        return Stats.Network.ServerStatsItem["Data Ping"]:GetValueString()
+    end)
+    
+    if success then
+        local pingNumber = tonumber(result:match("%d+"))
+        if pingNumber then
+            ping = pingNumber
+        end
+    end
+    
+    if ping == 0 then
+        success, result = pcall(function()
+            return game:GetService("NetworkClient"):GetServerConnection():GetRoundTripTime() * 1000
+        end)
+        if success and result then
+            ping = math.floor(result)
+        end
+    end
+    
+    pingText.TextColor3 = getPingColor(ping)
+    pingText.Text = "Ping: " .. ping .. "ms"
+end)
