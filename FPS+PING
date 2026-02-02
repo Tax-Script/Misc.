@@ -45,41 +45,41 @@ local lastFpsUpdate = tick()
 
 local function getFPSColor(fpsValue)
     if fpsValue >= 120 then
-        return Color3.fromRGB(0, 255, 0)       -- 亮绿：优秀
+        return Color3.fromRGB(0, 255, 0)
     elseif fpsValue >= 90 then
-        return Color3.fromRGB(100, 255, 100)   -- 浅绿：很好
+        return Color3.fromRGB(100, 255, 100)
     elseif fpsValue >= 60 then
-        return Color3.fromRGB(150, 255, 150)   -- 淡绿：良好
+        return Color3.fromRGB(150, 255, 150)
     elseif fpsValue >= 45 then
-        return Color3.fromRGB(255, 255, 100)   -- 黄色：中等
+        return Color3.fromRGB(255, 255, 100)
     elseif fpsValue >= 30 then
-        return Color3.fromRGB(255, 200, 50)    -- 橙黄：一般
+        return Color3.fromRGB(255, 200, 50)
     elseif fpsValue >= 20 then
-        return Color3.fromRGB(255, 150, 50)    -- 橙色：较差
+        return Color3.fromRGB(255, 150, 50)
     elseif fpsValue >= 10 then
-        return Color3.fromRGB(255, 100, 50)    -- 红橙：差
+        return Color3.fromRGB(255, 100, 50)
     else
-        return Color3.fromRGB(255, 50, 50)     -- 红色：很差
+        return Color3.fromRGB(255, 50, 50)
     end
 end
 
 local function getPingColor(pingValue)
     if pingValue < 30 then
-        return Color3.fromRGB(0, 255, 0)       -- 亮绿：极佳
+        return Color3.fromRGB(0, 255, 0)
     elseif pingValue < 60 then
-        return Color3.fromRGB(100, 255, 100)   -- 浅绿：优秀
+        return Color3.fromRGB(100, 255, 100)
     elseif pingValue < 100 then
-        return Color3.fromRGB(150, 255, 150)   -- 淡绿：良好
+        return Color3.fromRGB(150, 255, 150)
     elseif pingValue < 150 then
-        return Color3.fromRGB(255, 255, 100)   -- 黄色：中等
+        return Color3.fromRGB(255, 255, 100)
     elseif pingValue < 200 then
-        return Color3.fromRGB(255, 200, 50)    -- 橙黄：一般
+        return Color3.fromRGB(255, 200, 50)
     elseif pingValue < 300 then
-        return Color3.fromRGB(255, 150, 50)    -- 橙色：较差
+        return Color3.fromRGB(255, 150, 50)
     elseif pingValue < 500 then
-        return Color3.fromRGB(255, 100, 50)    -- 红橙：差
+        return Color3.fromRGB(255, 100, 50)
     else
-        return Color3.fromRGB(255, 50, 50)     -- 红色：极差
+        return Color3.fromRGB(255, 50, 50)
     end
 end
 
